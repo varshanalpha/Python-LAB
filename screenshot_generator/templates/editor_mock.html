@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VS Code - index.html</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=SF+Pro+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e1e;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #d4d4d4;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Activity Bar */
+        .activity-bar {
+            width: 48px;
+            background-color: #333333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 12px;
+            gap: 20px;
+            border-right: 1px solid #252526;
+        }
+
+        .activity-icon {
+            width: 24px;
+            height: 24px;
+            color: #858585;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .activity-icon.active {
+            color: #ffffff;
+            border-left: 2px solid #007acc;
+            padding-left: -2px;
+        }
+
+        /* Sidebar Files Explorer */
+        .sidebar {
+            width: 240px;
+            background-color: #252526;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #3c3c3c;
+        }
+
+        .sidebar-header {
+            padding: 10px 20px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #bbbbbb;
+        }
+
+        .folder-title {
+            padding: 6px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .file-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .file-item {
+            padding: 6px 30px;
+            font-size: 13px;
+            color: #cccccc;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-item.active {
+            background-color: #37373d;
+            color: #ffffff;
+        }
+
+        .file-item:hover:not(.active) {
+            background-color: #2a2d2e;
+        }
+
+        .folder-item {
+            padding: 6px 20px;
+            font-size: 13px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        /* Editor Area */
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #1e1e1e;
+        }
+
+        .editor-tabs {
+            height: 35px;
+            background-color: #2d2d2d;
+            display: flex;
+            align-items: flex-end;
+            border-bottom: 1px solid #252526;
+        }
+
+        .tab {
+            padding: 0 16px;
+            height: 30px;
+            background-color: #2d2d2d;
+            color: #969696;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-right: 1px solid #252526;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            border-top: 1px solid #007acc;
+        }
+
+        .editor-content {
+            flex: 1;
+            display: flex;
+            font-family: 'Fira Code', 'SF Mono', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-y: auto;
+            padding: 12px 0;
+        }
+
+        /* Line numbers */
+        .line-numbers {
+            width: 48px;
+            text-align: right;
+            padding-right: 16px;
+            color: #858585;
+            user-select: none;
+        }
+
+        /* Code content */
+        .code-area {
+            flex: 1;
+            color: #d4d4d4;
+        }
+
+        .highlight-line {
+            background-color: rgba(255, 235, 59, 0.08);
+            border-left: 3px solid #fbc02d;
+            margin-left: -3px;
+        }
+
+        /* Syntax coloring */
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .tag { color: #569cd6; }
+        .attr { color: #9cdcfe; }
+        .function { color: #dcdcaa; }
+        .variable { color: #9cdcfe; }
+        .number { color: #b5cea8; }
+        .operator { color: #d4d4d4; }
+    </style>
+</head>
+<body>
+
+    <!-- Activity Bar -->
+    <div class="activity-bar">
+        <div class="activity-icon active">
+            <!-- Explorer Icon -->
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5.5H12L10 3.5H5c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-11c0-1.1-.9-2-2-2zM19 18.5H5v-11h14v11z"/></svg>
+        </div>
+        <div class="activity-icon">
+            <!-- Search Icon -->
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+        <div class="activity-icon">
+            <!-- Source Control Icon -->
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        </div>
+    </div>
+
+    <!-- Sidebar Explorer -->
+    <div class="sidebar">
+        <div class="sidebar-header">Explorer</div>
+        <div class="folder-title">
+            <span style="font-size: 11px;">▼</span> DEALER_EVALUATION_FRONTEND
+        </div>
+        
+        <div class="folder-item" style="padding-left: 20px;">
+            <span>▼</span> html
+        </div>
+        <ul class="file-list">
+            <li class="file-item active" style="padding-left: 36px;">
+                <span style="color: #e06c75; margin-right: 4px;">&lt;&gt;</span> index.html
+            </li>
+        </ul>
+        
+        <div class="folder-item" style="padding-left: 20px; color: #858585;">
+            <span>▶</span> node_modules
+        </div>
+        <ul class="file-list">
+            <li class="file-item" style="padding-left: 36px;">
+                <span style="color: #35b3c4; margin-right: 4px;">🐍</span> app.py
+            </li>
+            <li class="file-item" style="padding-left: 36px;">
+                <span style="color: #f18c35; margin-right: 4px;">{ }</span> products.json
+            </li>
+            <li class="file-item" style="padding-left: 36px;">
+                <span style="color: #858585; margin-right: 4px;">📄</span> Dockerfile
+            </li>
+            <li class="file-item" style="padding-left: 36px;">
+                <span style="color: #c586c0; margin-right: 4px;">📄</span> requirements.txt
+            </li>
+        </ul>
+    </div>
+
+    <!-- Editor Container -->
+    <div class="editor-container">
+        <div class="editor-tabs">
+            <div class="tab active">
+                <span style="color: #e06c75;">&lt;&gt;</span> index.html
+            </div>
+        </div>
+
+        <div class="editor-content">
+            <div class="line-numbers">
+                1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21
+            </div>
+            <div class="code-area">
+                &lt;<span class="tag">html</span>&gt;<br>
+                &nbsp;&nbsp;&lt;<span class="tag">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"</span>&gt;&lt;/<span class="tag">script</span>&gt;<br>
+                &nbsp;&nbsp;&lt;<span class="tag">style</span>&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">td</span>:<span class="tag">nth-child</span>(even), <span class="tag">th</span>:<span class="tag">nth-child</span>(even) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">background-color</span>: <span class="string">#D6EEEE</span>;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                &nbsp;&nbsp;&lt;/<span class="tag">style</span>&gt;<br>
+                &nbsp;&nbsp;&lt;<span class="tag">script</span>&gt;<br>
+                <div class="highlight-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span> <span class="variable">produrl</span> = <span class="string">"https://product-details.1a2b3c4d5e.us-south.codeengine.appdomain.cloud/"</span></div>
+                <div class="highlight-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span> <span class="variable">dealerurl</span> = <span class="string">"https://dealer-pricing.1a2b3c4d5e.us-south.codeengine.appdomain.cloud/"</span></div>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">axios</span>.<span class="function">get</span>(<span class="variable">produrl</span>+<span class="string">"products"</span>).<span class="function">then</span>(<span class="variable">res</span>=&gt;{<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span> <span class="variable">selEl</span> = <span class="variable">document</span>.<span class="function">createElement</span>(<span class="string">"select"</span>);<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">selEl</span>.<span class="function">setAttribute</span>(<span class="string">"id"</span>,<span class="string">"selProd"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">selEl</span>.<span class="function">setAttribute</span>(<span class="string">"onChange"</span>,<span class="string">"getDealers()"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span> <span class="variable">defaultOpt</span> = <span class="variable">document</span>.<span class="function">createElement</span>(<span class="string">"option"</span>);<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">defaultOpt</span>.<span class="function">setAttribute</span>(<span class="string">'value'</span>,<span class="string">"--SELECT--"</span>);<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">defaultOpt</span>.<span class="variable">innerText</span> = <span class="string">"--SELECT--"</span>;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">selEl</span>.<span class="function">appendChild</span>(<span class="variable">defaultOpt</span>);<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

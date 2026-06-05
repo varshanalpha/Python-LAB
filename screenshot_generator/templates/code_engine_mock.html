@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBM Cloud - Code Engine Console</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ibm-blue-100: #0f62fe;
+            --ibm-blue-80: #0043ce;
+            --ibm-gray-100: #161616;
+            --ibm-gray-90: #262626;
+            --ibm-gray-80: #393939;
+            --ibm-gray-70: #525252;
+            --ibm-gray-20: #e0e0e0;
+            --ibm-gray-10: #f4f4f4;
+            --ibm-green: #24a148;
+            --ibm-border: #8d8d8d;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--ibm-gray-10);
+            color: var(--ibm-gray-100);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Top Header */
+        header {
+            background-color: var(--ibm-gray-100);
+            color: white;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--ibm-gray-80);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: #78a9ff;
+        }
+
+        .breadcrumb {
+            color: #c6c6c6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .breadcrumb span.sep {
+            color: var(--ibm-gray-70);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #c6c6c6;
+        }
+
+        .user-profile {
+            background-color: var(--ibm-blue-100);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 12px;
+        }
+
+        /* Layout Main */
+        .main-layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Sidebar Navigation */
+        nav {
+            width: 240px;
+            background-color: white;
+            border-right: 1px solid var(--ibm-gray-20);
+            display: flex;
+            flex-direction: column;
+            padding-top: 16px;
+        }
+
+        .nav-item {
+            padding: 12px 24px;
+            font-size: 14px;
+            color: var(--ibm-gray-70);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item.active {
+            color: var(--ibm-blue-100);
+            font-weight: 500;
+            background-color: var(--ibm-gray-10);
+            border-left-color: var(--ibm-blue-100);
+        }
+
+        .nav-item:hover:not(.active) {
+            background-color: var(--ibm-gray-10);
+            color: var(--ibm-gray-100);
+        }
+
+        /* Content Area */
+        main {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .page-title-area h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 300;
+        }
+
+        .page-title-area p {
+            margin: 4px 0 0 0;
+            font-size: 14px;
+            color: var(--ibm-gray-70);
+        }
+
+        .btn-primary {
+            background-color: var(--ibm-blue-100);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--ibm-blue-80);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: flex;
+            gap: 16px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border: 1px solid var(--ibm-gray-20);
+            padding: 16px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: var(--ibm-gray-70);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--ibm-gray-20);
+            gap: 8px;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            font-size: 14px;
+            color: var(--ibm-gray-70);
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            color: var(--ibm-gray-100);
+            font-weight: 500;
+            border-bottom-color: var(--ibm-blue-100);
+        }
+
+        /* Applications Table */
+        .table-container {
+            background-color: white;
+            border: 1px solid var(--ibm-gray-20);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: var(--ibm-gray-10);
+            padding: 12px 16px;
+            font-weight: 600;
+            color: var(--ibm-gray-70);
+            border-bottom: 1px solid var(--ibm-gray-20);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--ibm-gray-10);
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background-color: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--ibm-green);
+        }
+
+        .status-text {
+            color: var(--ibm-gray-100);
+        }
+
+        .app-url {
+            color: var(--ibm-blue-100);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .app-url:hover {
+            text-decoration: underline;
+        }
+
+        .action-icon {
+            cursor: pointer;
+            color: var(--ibm-gray-70);
+        }
+
+        .action-icon:hover {
+            color: var(--ibm-gray-100);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <div class="logo">ibm <span>cloud</span></div>
+            <div class="breadcrumb">
+                <span class="sep">|</span>
+                <a href="#">Code Engine</a>
+                <span class="sep">&gt;</span>
+                <a href="#">Projects</a>
+                <span class="sep">&gt;</span>
+                <span id="project-breadcrumb">course-capstone-project</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <span>Region: Dallas (us-south)</span>
+            <div class="user-profile">VS</div>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <nav>
+            <a href="#" class="nav-item">Overview</a>
+            <a href="#" class="nav-item active">Applications</a>
+            <a href="#" class="nav-item">Jobs</a>
+            <a href="#" class="nav-item">Builds</a>
+            <a href="#" class="nav-item">Secrets & Configmaps</a>
+            <a href="#" class="nav-item">Bindings</a>
+        </nav>
+
+        <main>
+            <div class="page-header">
+                <div class="page-title-area">
+                    <h1 id="main-title">Applications</h1>
+                    <p>Manage serverless applications that auto-scale based on incoming traffic.</p>
+                </div>
+                <button class="btn-primary">
+                    Create Application
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="label">Total Applications</div>
+                    <div class="value" id="stat-total">3</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Status</div>
+                    <div class="value" style="color: var(--ibm-green)">All Healthy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Active Replicas</div>
+                    <div class="value">3 / 3</div>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active">Applications</div>
+                <div class="tab">Routing</div>
+                <div class="tab">Access Policies</div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Ready status</th>
+                            <th>External Endpoint</th>
+                            <th>Instances</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+                    <tbody id="app-table-body">
+                        <!-- Rows will be injected or modified by generator -->
+                        <tr id="row-prod-details">
+                            <td style="font-weight: 500;">product-details</td>
+                            <td>
+                                <div class="status-badge">
+                                    <div class="status-dot"></div>
+                                    <span class="status-text">Ready</span>
+                                </div>
+                            </td>
+                            <td>1 / 1</td>
+                            <td><a class="app-url" href="#" id="url-prod-details">https://product-details.1a2b3c4d5e.us-south.codeengine.appdomain.cloud</a></td>
+                            <td>1</td>
+                            <td>2 mins ago</td>
+                        </tr>
+                        <tr id="row-dealer-pricing">
+                            <td style="font-weight: 500;">dealer-pricing</td>
+                            <td>
+                                <div class="status-badge">
+                                    <div class="status-dot"></div>
+                                    <span class="status-text">Ready</span>
+                                </div>
+                            </td>
+                            <td>1 / 1</td>
+                            <td><a class="app-url" href="#" id="url-dealer-pricing">https://dealer-pricing.1a2b3c4d5e.us-south.codeengine.appdomain.cloud</a></td>
+                            <td>1</td>
+                            <td>5 mins ago</td>
+                        </tr>
+                        <tr id="row-frontend">
+                            <td style="font-weight: 500;">dealer-evaluation</td>
+                            <td>
+                                <div class="status-badge">
+                                    <div class="status-dot"></div>
+                                    <span class="status-text">Ready</span>
+                                </div>
+                            </td>
+                            <td>1 / 1</td>
+                            <td><a class="app-url" href="#" id="url-frontend">https://dealer-evaluation.1a2b3c4d5e.us-south.codeengine.appdomain.cloud</a></td>
+                            <td>1</td>
+                            <td>Just now</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Custom URL parameter handling to highlight specific application or list
+        const urlParams = new URLSearchParams(window.location.search);
+        const focusApp = urlParams.get('focus');
+        
+        if (focusApp) {
+            const rows = ['row-prod-details', 'row-dealer-pricing', 'row-frontend'];
+            rows.forEach(rowId => {
+                const row = document.getElementById(rowId);
+                if (rowId !== focusApp) {
+                    row.style.opacity = '0.45'; // Fade out non-focused apps to highlight the deployed one
+                } else {
+                    row.style.backgroundColor = '#edf5ff'; // Highlight the active deployment
+                }
+            });
+        }
+    </script>
+</body>
+</html>
